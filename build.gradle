@@ -1,0 +1,60 @@
+//defaultTasks 'clean','test','aggregate'
+
+apply plugin: 'java'
+apply plugin: 'idea'
+apply plugin: 'net.serenity-bdd.aggregator'
+
+group 'appnativa.qa.servicio.api'
+version '1.0'
+sourceCompatibility = 1.8
+
+compileJava.options.encoding = "UTF-8"
+compileTestJava.options.encoding = "UTF-8"
+
+repositories {
+    jcenter()
+    mavenCentral()
+}
+
+buildscript {
+    repositories {
+        jcenter()
+        mavenCentral()
+        //mavenLocal()
+    }
+    dependencies {
+        classpath("net.serenity-bdd:serenity-gradle-plugin:2.0.91")
+    }
+}
+
+ext {
+    serenityVersion = '2.0.91' //Jan, 2020
+    serenityCucumberVersion = '1.9.51' //Jan, 2020
+    junitVersion = '4.13.1' //Oct, 2020
+    assertjCoreVersion = '3.18.0' //Oct, 2020
+    slf4jSimpleVersion = '1.7.30' //Dec, 2019
+    poiVersion = '4.1.2' //Feb, 2020
+}
+
+dependencies {
+    testImplementation "junit:junit:$rootProject.ext.junitVersion"
+    testImplementation "org.assertj:assertj-core:$rootProject.ext.assertjCoreVersion"
+    testImplementation "org.slf4j:slf4j-simple:$rootProject.ext.slf4jSimpleVersion"
+    testImplementation "net.serenity-bdd:serenity-core:$rootProject.ext.serenityVersion"
+    testImplementation "net.serenity-bdd:serenity-junit:$rootProject.ext.serenityVersion"
+
+    implementation "net.serenity-bdd:serenity-screenplay:$rootProject.ext.serenityVersion"
+    implementation "net.serenity-bdd:serenity-screenplay-rest:$rootProject.ext.serenityVersion"
+    implementation "net.serenity-bdd:serenity-cucumber:$rootProject.ext.serenityCucumberVersion"
+
+    //Microsoft Format Files 97-2003
+    implementation "org.apache.poi:poi:$rootProject.ext.poiVersion"
+    //Microsoft Format Files 2007+
+    implementation "org.apache.poi:poi-ooxml:$rootProject.ext.poiVersion"
+}
+
+gradle.startParameter.continueOnFailure = true
+
+tasks.named('wrapper') {
+    distributionType = Wrapper.DistributionType.ALL
+}
